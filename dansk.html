@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Dansk">
+<meta name="theme-color" content="#C8102E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23C8102E'/%3E%3Crect x='34' y='0' width='16' height='100' fill='white'/%3E%3Crect x='0' y='42' width='100' height='16' fill='white'/%3E%3C/svg%3E">
+<title>Dansk</title>
+<style>
+  :root{
+    --red:#C8102E; --red-dark:#a50d26;
+    --ink:#1c2530; --muted:#6b7684;
+    --bg:#f4f5f7; --card:#ffffff; --line:#e4e7eb;
+    --good:#1a8a4a; --good-bg:#e7f5ec;
+    --bad:#c0293c; --bad-bg:#fbe9ec;
+    --accent:#2b5d7d; --accent-bg:#eaf1f6;
+    --amber:#b06a00; --amber-bg:#fdf1df;
+    --safe-top:env(safe-area-inset-top,0px);
+    --safe-bot:env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;height:100%}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);color:var(--ink);display:flex;flex-direction:column;min-height:100%;
+    padding:var(--safe-top) 0 var(--safe-bot)}
+  header{background:var(--red);color:#fff;padding:13px 18px;display:flex;align-items:center;gap:12px;
+    position:sticky;top:0;z-index:10}
+  .flag{width:26px;height:20px;background:var(--red);position:relative;border-radius:3px;flex:0 0 auto;
+    box-shadow:0 1px 3px rgba(0,0,0,.25)}
+  .flag:before{content:"";position:absolute;left:9px;top:0;bottom:0;width:4px;background:#fff}
+  .flag:after{content:"";position:absolute;top:8px;left:0;right:0;height:4px;background:#fff}
+  header .htxt{flex:1}
+  header h1{font-size:16px;margin:0;font-weight:700;letter-spacing:.2px;line-height:1.25}
+  header .sub{font-size:11px;opacity:.9;font-weight:500}
+  main{flex:1;padding:18px 16px;max-width:600px;width:100%;margin:0 auto}
+
+  .lead{color:var(--muted);font-size:14px;margin:0 0 16px;line-height:1.55}
+  .modes{display:flex;flex-direction:column;gap:10px}
+  .mode{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;
+    display:flex;align-items:center;gap:14px;cursor:pointer;transition:transform .08s ease;
+    text-align:left;width:100%;font:inherit;color:inherit}
+  .mode:active{transform:scale(.985)}
+  .mode .ic{width:44px;height:44px;border-radius:12px;flex:0 0 auto;display:grid;place-items:center;
+    font-size:21px;background:var(--accent-bg)}
+  .mode.hero .ic{width:50px;height:50px;font-size:25px}
+  .mode .t{flex:1}
+  .mode .t b{display:block;font-size:15.5px;margin-bottom:2px}
+  .mode.hero .t b{font-size:17px}
+  .mode .t span{font-size:12.5px;color:var(--muted);line-height:1.4}
+  .mode .arw{color:var(--muted);font-size:20px}
+  .grouplabel{font-size:11px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;
+    color:var(--muted);margin:20px 4px 9px}
+
+  .bar{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+  .back{background:none;border:none;color:var(--accent);font:inherit;font-weight:600;font-size:14px;
+    cursor:pointer;padding:6px 2px;display:flex;align-items:center;gap:4px}
+  .count{margin-left:auto;font-size:13px;color:var(--muted);font-weight:600;text-align:right;line-height:1.3}
+  .count b{color:var(--red)}
+
+  .filters{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
+  .chip{border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:999px;
+    padding:6px 13px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit}
+  .chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+  h2.sec{font-size:20px;margin:2px 0 14px}
+  .topics{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .topic{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 13px;
+    cursor:pointer;text-align:center;font:inherit;color:inherit;transition:transform .08s}
+  .topic:active{transform:scale(.97)}
+  .topic .em{font-size:26px;display:block;margin-bottom:7px}
+  .topic b{font-size:14px;display:block}
+  .topic span{font-size:11px;color:var(--muted)}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 18px;
+    box-shadow:0 1px 2px rgba(20,30,45,.04);margin-bottom:14px}
+  .tag{font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+  .prompt{font-size:22px;line-height:1.4;font-weight:600;margin-bottom:6px}
+  .prompt .blank{color:var(--red);border-bottom:2px dashed var(--red);padding:0 3px}
+  .hint{font-size:14px;color:var(--muted);margin-bottom:16px}
+  .hint em{font-style:normal;color:var(--accent);font-weight:600}
+
+  input[type=text]{width:100%;font-size:19px;padding:13px 14px;border:2px solid var(--line);border-radius:11px;
+    font-family:inherit;outline:none;background:#fbfcfd}
+  input[type=text]:focus{border-color:var(--accent)}
+  .aeoa{display:flex;gap:8px;margin-top:10px}
+  .aeoa button{flex:1;font-size:18px;padding:9px 0;border:1px solid var(--line);background:var(--card);
+    border-radius:9px;cursor:pointer;font-family:inherit;color:var(--ink)}
+  .aeoa button:active{background:#eef2f5}
+
+  .opts{display:flex;flex-direction:column;gap:9px;margin-top:4px}
+  .opt{border:2px solid var(--line);background:#fbfcfd;border-radius:11px;padding:13px 15px;font-size:17px;
+    font-family:inherit;text-align:left;cursor:pointer;color:var(--ink);transition:border-color .1s}
+  .opt:active{border-color:var(--accent)}
+  .opt.correct{border-color:var(--good);background:var(--good-bg)}
+  .opt.wrong{border-color:var(--bad);background:var(--bad-bg)}
+  .opt:disabled{cursor:default}
+
+  .action{width:100%;margin-top:16px;background:var(--red);color:#fff;border:none;padding:15px;border-radius:12px;
+    font-size:16px;font-weight:700;font-family:inherit;cursor:pointer}
+  .action:active{background:var(--red-dark)}
+  .action.ghost{background:var(--accent)}
+
+  .fb{margin-top:16px;padding:14px 16px;border-radius:12px;font-size:14.5px;line-height:1.5;display:none}
+  .fb.show{display:block}.fb.ok{background:var(--good-bg);color:var(--good)}.fb.no{background:var(--bad-bg);color:var(--bad)}
+  .fb b{font-weight:700}.fb .full{display:block;margin-top:7px;color:var(--ink);font-size:13.5px;opacity:.85}
+
+  .box{border:1px solid var(--line);border-radius:12px;padding:13px 15px;margin-bottom:10px;background:#fbfcfd}
+  .box h4{margin:0 0 8px;font-size:14px;color:var(--accent);display:flex;align-items:center;gap:7px}
+  .box h4 .d{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:0 0 auto}
+  .frame{font-size:15px;line-height:1.6;padding:3px 0;color:var(--ink)}
+  .frame b{color:var(--red);font-weight:600;border-bottom:1.5px dashed var(--red);padding:0 10px}
+
+  .say{background:var(--amber-bg);color:var(--amber);border-radius:10px;padding:11px 14px;font-size:13.5px;
+    font-weight:600;margin-bottom:14px;display:flex;gap:8px;align-items:flex-start;line-height:1.45}
+  .reveal{background:var(--accent-bg);border-radius:12px;padding:14px 16px;margin-top:6px;display:none}
+  .reveal.show{display:block}
+  .reveal .rt{font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+  .reveal .ln{font-size:16px;line-height:1.6;padding:2px 0}
+  .reveal .sp{display:inline-block;background:#fff;border:1px solid var(--line);border-radius:7px;
+    padding:2px 10px;font-weight:700;color:var(--red);font-size:14px;margin-top:6px}
+  .rate{display:flex;gap:10px;margin-top:12px}
+  .rate button{flex:1;padding:13px;border-radius:12px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;border:2px solid}
+  .rate .yes{background:var(--good-bg);color:var(--good);border-color:var(--good)}
+  .rate .no{background:var(--bad-bg);color:var(--red);border-color:var(--red)}
+
+  .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
+  .pill{flex:1;min-width:130px;background:var(--ink);color:#fff;border:none;border-radius:12px;padding:13px;
+    font-size:14.5px;font-weight:700;font-family:inherit;cursor:pointer}
+  .pill.red{background:var(--red)}
+  ul.tips{margin:0;padding-left:20px}
+  ul.tips li{font-size:14.5px;line-height:1.6;margin-bottom:7px}
+  .kw{background:var(--accent-bg);color:var(--accent);border-radius:6px;padding:1px 7px;font-weight:600;font-size:13.5px}
+  footer{text-align:center;font-size:11px;color:var(--muted);padding:14px;line-height:1.5}
+</style>
+</head>
+<body>
+<header>
+  <div class="flag"></div>
+  <div class="htxt"><h1 id="hTitle">Dansk</h1><div class="sub" id="hSub">øvelser til Modul 2</div></div>
+</header>
+<main id="main"></main>
+<footer id="foot">Dine egne danskøvelser</footer>
+
+<script>
+/* ==================== DATA ==================== */
+
+/* --- 1) VERBER (27) --- grp: ureg | modal | reg --- */
+const VERBS = [
+  ["være","er","var","har været","to be","ureg"],
+  ["have","har","havde","har haft","to have","ureg"],
+  ["gøre","gør","gjorde","har gjort","to do","ureg"],
+  ["sige","siger","sagde","har sagt","to say","ureg"],
+  ["gå","går","gik","er gået","to go / walk","ureg"],
+  ["komme","kommer","kom","er kommet","to come","ureg"],
+  ["blive","bliver","blev","er blevet","to become / stay","ureg"],
+  ["se","ser","så","har set","to see","ureg"],
+  ["få","får","fik","har fået","to get","ureg"],
+  ["tage","tager","tog","har taget","to take","ureg"],
+  ["give","giver","gav","har givet","to give","ureg"],
+  ["vide","ved","vidste","har vidst","to know (a fact)","ureg"],
+  ["finde","finder","fandt","har fundet","to find","ureg"],
+  ["skrive","skriver","skrev","har skrevet","to write","ureg"],
+  ["stå","står","stod","har stået","to stand","ureg"],
+  ["kunne","kan","kunne","har kunnet","can / to be able to","modal"],
+  ["skulle","skal","skulle","har skullet","shall / must","modal"],
+  ["ville","vil","ville","har villet","will / want to","modal"],
+  ["måtte","må","måtte","har måttet","may / must","modal"],
+  ["lave","laver","lavede","har lavet","to make / do","reg"],
+  ["bo","bor","boede","har boet","to live (reside)","reg"],
+  ["arbejde","arbejder","arbejdede","har arbejdet","to work","reg"],
+  ["tro","tror","troede","har troet","to think / believe","reg"],
+  ["spise","spiser","spiste","har spist","to eat","reg"],
+  ["købe","køber","købte","har købt","to buy","reg"],
+  ["tale","taler","talte","har talt","to speak","reg"],
+  ["bruge","bruger","brugte","har brugt","to use / need","reg"]
+];
+
+/* --- 2) GLOSER & GRAMMATIK (lektion 1–3) --- */
+const VOCAB = {
+  "Job":[["designer","designer"],["økonom","economist"],["farmaceut","pharmacist"],["journalist","journalist"],
+    ["sygeplejerske","nurse"],["arkitekt","architect"],["underviser","teacher"],["kollega","colleague"],
+    ["chef","boss"],["vejleder","supervisor"],["træner","coach"]],
+  "Steder":[["en bank","a bank"],["en restaurant","a restaurant"],["en avis","a newspaper"],["et apotek","a pharmacy"],
+    ["et hospital","a hospital"],["et universitet","a university"],["en skole","a school"]],
+  "Personer":[["min kæreste","my partner"],["mit job","my job"],["mine venner","my friends"],["en kvinde","a woman"],["en mand","a man"]],
+  "Beskriv folk":[["flink","kind"],["sjov","funny"],["mærkelig","strange"],["irriterende","annoying"],
+    ["dygtig","skilled"],["inspirerende","inspiring"],["forvirret","confused"],["flittig","hard-working"]],
+  "Farver":[["hvid","white"],["blå","blue"],["grå","grey"],["sort","black"],["rød","red"],["grøn","green"],
+    ["gul","yellow"],["orange","orange"],["brun","brown"]],
+  "Møbler":[["en sofa","a sofa"],["en lampe","a lamp"],["et bord","a table"],["en seng","a bed"],["et skab","a cupboard"],
+    ["en stol","a chair"],["en kommode","a dresser"],["et gardin","a curtain"],["en pude","a cushion"]]
+};
+const PREP = [
+  ["Jeg flyttede ___ Danmark.","til","I moved to Denmark","destination → til"],
+  ["Jeg arbejdede ___ en bank.","i","I worked in a bank","ubestemt bygning → i"],
+  ["Hun læste ___ universitetet.","på","She studied at the university","institution → på"],
+  ["Jeg boede ___ København.","i","I lived in Copenhagen","by → i"],
+  ["Han arbejdede ___ et hospital.","på","He worked at a hospital","institution → på"],
+  ["Hun var farmaceut ___ et apotek.","på","She was a pharmacist at a pharmacy","institution → på"],
+  ["Jeg havde min egen restaurant ___ Fyn.","på","I had my own restaurant on Funen","ø → på"],
+  ["Han underviste ___ matematik.","i","He taught maths","fag → i"],
+  ["Jeg flyttede ___ Kolding.","til","I moved to Kolding","destination → til"],
+  ["Hun arbejdede som journalist ___ en avis.","på","…at a newspaper","institution → på"],
+  ["Jeg studerede ___ Berlin.","i","I studied in Berlin","by → i"],
+  ["De flyttede ___ et andet land.","til","They moved to another country","destination → til"]
+];
+const ADJ = [
+  ["en ___ sofa (hvid)","hvid",["hvid","hvidt","hvide"],"en-ord, ubestemt → grundform","a white sofa"],
+  ["et ___ bord (hvid)","hvidt",["hvid","hvidt","hvide"],"et-ord, ubestemt → +t","a white table"],
+  ["___ borde (hvid)","hvide",["hvid","hvidt","hvide"],"flertal → +e","white tables"],
+  ["den ___ sofa (hvid)","hvide",["hvid","hvidt","hvide"],"bestemt form → altid +e","the white sofa"],
+  ["det ___ skab (hvid)","hvide",["hvid","hvidt","hvide"],"bestemt form → altid +e","the white cupboard"],
+  ["mit ___ skab (hvid)","hvide",["hvid","hvidt","hvide"],"ejestedord → bestemt form → +e","my white cupboard"],
+  ["en ___ lampe (blå)","blå",["blå","blåt","blåe"],"vokal-slut → ingen e-form","a blue lamp"],
+  ["de ___ stole (blå)","blå",["blå","blåt","blåe"],"blå/grå har ingen e-form","the blue chairs"],
+  ["de ___ gardiner (grå)","grå",["grå","gråt","gråe"],"grå har ingen e-form","the grey curtains"],
+  ["to ___ stole (lille)","små",["lille","lilles","små"],"lille → små i flertal","two small chairs"],
+  ["de ___ gardiner (stribet)","stribede",["stribet","stribede","stribeter"],"-et → -ede","the striped curtains"],
+  ["den ___ kommode (gammel)","gamle",["gammel","gammele","gamle"],"gammel → gamle (taber -e-)","the old dresser"],
+  ["de ___ puder (lækker)","lækre",["lækker","lækkere","lækre"],"lækker → lækre (taber -e-)","the nice cushions"],
+  ["et ___ bord (rød)","rødt",["rød","rødt","røde"],"et-ord, ubestemt → +t","a red table"],
+  ["den ___ seng (sort)","sorte",["sort","sortt","sorte"],"bestemt form → +e","the black bed"]
+];
+const KORT = [
+  ["Er du træt?","er",["er","har","gør"],"være → er"],
+  ["Har du en bil?","har",["er","har","gør"],"have → har"],
+  ["Kan du svømme?","kan",["kan","gør","er"],"modalverbum gentages → kan"],
+  ["Vil du med?","vil",["vil","gør","har"],"modalverbum gentages → vil"],
+  ["Skal du arbejde?","skal",["skal","gør","er"],"modalverbum gentages → skal"],
+  ["Bor du i byen?","gør",["gør","er","har"],"almindeligt verbum → gør"],
+  ["Arbejder du meget?","gør",["gør","er","kan"],"almindeligt verbum → gør"],
+  ["Synes du om filmen?","synes",["synes","gør","er"],"synes gentages → synes"],
+  ["Læser du avisen?","gør",["gør","er","har"],"almindeligt verbum → gør"],
+  ["Er hun sød?","er",["er","gør","har"],"være → er"],
+  ["Har de børn?","har",["har","gør","er"],"have → har"],
+  ["Kommer du i morgen?","gør",["gør","er","kan"],"almindeligt verbum → gør"]
+];
+
+/* --- 3) MODULTEST (mundtlig) --- */
+const TOPICS = [
+  { id:"arbejde", em:"💼", title:"Mit arbejde", note:"job / arbejdssted",
+    boxes:[
+      {h:"job / arbejdssted",lines:["Jeg arbejder som <b>___</b>.","Jeg har mit eget firma / er selvstændig.","Mit arbejdssted ligger i <b>___</b>."]},
+      {h:"arbejdsopgaver",lines:["Mine arbejdsopgaver er at <b>___</b> og <b>___</b>.","Jeg <b>___</b> hver dag."]},
+      {h:"dage / tid",lines:["Jeg arbejder <b>___</b> dage om ugen.","Jeg arbejder fra klokken <b>___</b> til <b>___</b>."]},
+      {h:"kollegaer / chef",lines:["Jeg arbejder alene / sammen med <b>___</b>.","Jeg har en chef / Jeg har ikke en chef."]},
+      {h:"pauser",lines:["Jeg holder pause klokken <b>___</b>.","Jeg holder en pause på <b>___</b> minutter."]},
+      {h:"transport til arbejde",lines:["Jeg cykler / tager bussen / kører i bil.","Jeg arbejder hjemmefra."]}],
+    q:[["Hvad arbejder du med?","Jeg arbejder som <b>___</b>."],["Hvor ligger dit arbejde?","Mit arbejde ligger i <b>___</b>."],
+      ["Hvilke arbejdsopgaver har du?","Jeg <b>___</b> og <b>___</b>."],["Hvor mange timer arbejder du om ugen?","Jeg arbejder cirka <b>___</b> timer om ugen."],
+      ["Arbejder du alene eller sammen med andre?","Jeg arbejder <b>___</b>."],["Hvornår holder du pause?","Jeg holder pause klokken <b>___</b>."],
+      ["Hvordan kommer du på arbejde?","Jeg <b>___</b> på arbejde."],["Kan du lide dit job? Hvorfor?","Ja, fordi <b>___</b>."],
+      ["Er der noget, du gerne vil ændre?","Jeg vil gerne <b>___</b>."]]},
+  { id:"bolig", em:"🏠", title:"Min bolig", note:"sted / hus",
+    boxes:[
+      {h:"sted / by",lines:["Jeg bor i <b>___</b>.","Jeg bor i en bydel, der hedder <b>___</b>."]},
+      {h:"hus / lejlighed",lines:["Jeg bor i en lejlighed / et hus / et rækkehus.","Jeg lejer / ejer min bolig."]},
+      {h:"værelser / m²",lines:["Min bolig er cirka <b>___</b> kvadratmeter.","Der er <b>___</b> værelser."]},
+      {h:"alene / sammen med",lines:["Jeg bor alene.","Jeg bor sammen med min <b>___</b>."]},
+      {h:"naboer",lines:["Jeg kender / kender ikke mine naboer så godt.","Mine naboer er <b>___</b>."]},
+      {h:"område",lines:["Området er <b>___</b> (stille / livligt / grønt).","Der er <b>___</b> i nærheden."]}],
+    q:[["Hvor bor du?","Jeg bor i <b>___</b>."],["Bor du i hus eller lejlighed?","Jeg bor i <b>___</b>."],
+      ["Hvor stor er din bolig?","Den er cirka <b>___</b> kvadratmeter."],["Hvor mange værelser har du?","Jeg har <b>___</b> værelser."],
+      ["Bor du alene?","Jeg bor <b>___</b>."],["Kender du dine naboer?","Ja / Nej, jeg <b>___</b>."],
+      ["Hvad synes du om dit område?","Jeg synes, området er <b>___</b>."],["Vil du blive boende eller flytte?","Jeg vil gerne <b>___</b>, fordi <b>___</b>."]]},
+  { id:"fritid", em:"⚽", title:"Min fritidsaktivitet", note:"sport / hobby",
+    boxes:[
+      {h:"aktivitet",lines:["I min fritid kan jeg godt lide at <b>___</b>.","Jeg dyrker <b>___</b>."]},
+      {h:"sted / by",lines:["Jeg gør det i <b>___</b>.","Jeg træner i <b>___</b> (et center / en klub / hjemme)."]},
+      {h:"dage / tid",lines:["Jeg gør det <b>___</b> gange om ugen.","Jeg træner om <b>___</b>dagen."]},
+      {h:"pris / gratis",lines:["Det er gratis.","Det koster <b>___</b> kroner om måneden."]},
+      {h:"alene / sammen med",lines:["Jeg gør det alene.","Jeg gør det sammen med <b>___</b>."]},
+      {h:"transport til aktiviteten",lines:["Jeg cykler / går / tager bussen derhen."]}],
+    q:[["Hvad laver du i din fritid?","I min fritid <b>___</b>."],["Hvor tit dyrker du det?","Jeg gør det <b>___</b> gange om ugen."],
+      ["Hvor gør du det?","Jeg gør det i <b>___</b>."],["Koster det noget?","Det er gratis / Det koster <b>___</b>."],
+      ["Gør du det alene eller sammen med andre?","Jeg gør det <b>___</b>."],["Hvorfor kan du lide den aktivitet?","Fordi <b>___</b>."]]},
+  { id:"studie", em:"🎓", title:"Mit studie", note:"uddannelse",
+    boxes:[
+      {h:"uddannelse / sted",lines:["Jeg studerer <b>___</b>.","Jeg går på <b>___</b> (skole / universitet)."]},
+      {h:"dage / tid",lines:["Jeg har undervisning <b>___</b> dage om ugen."]},
+      {h:"fag / lærere",lines:["Mine fag er <b>___</b>.","Mine lærere er <b>___</b>."]},
+      {h:"studiekammerater",lines:["Mine studiekammerater kommer fra <b>___</b>."]},
+      {h:"pauser",lines:["Vi holder pause klokken <b>___</b>."]},
+      {h:"transport til studie",lines:["Jeg tager <b>___</b> til studiet."]}],
+    q:[["Hvad studerer du?","Jeg studerer <b>___</b>."],["Hvor studerer du?","Jeg studerer på <b>___</b>."],
+      ["Hvilke fag har du?","Mine fag er <b>___</b>."],["Hvordan er dine lærere?","De er <b>___</b>."],
+      ["Hvem er dine studiekammerater?","De kommer fra <b>___</b>."],["Hvordan kommer du til studiet?","Jeg <b>___</b>."]]},
+  { id:"praktik", em:"🔧", title:"Min praktik", note:"praktiksted",
+    boxes:[
+      {h:"praktiksted",lines:["Jeg er i praktik hos / på <b>___</b>.","Praktikstedet ligger i <b>___</b>."]},
+      {h:"arbejdsopgaver",lines:["Jeg <b>___</b> i min praktik."]},
+      {h:"dage / tid",lines:["Jeg er i praktik <b>___</b> dage om ugen.","Praktikken varer <b>___</b> uger."]},
+      {h:"kollegaer / chef",lines:["Min vejleder hedder <b>___</b>."]},
+      {h:"pauser",lines:["Jeg holder pause klokken <b>___</b>."]},
+      {h:"transport til praktiksted",lines:["Jeg <b>___</b> til praktikstedet."]}],
+    q:[["Hvor er du i praktik?","Jeg er i praktik hos <b>___</b>."],["Hvad laver du i din praktik?","Jeg <b>___</b>."],
+      ["Hvor længe varer din praktik?","Den varer <b>___</b> uger."],["Hvem hjælper dig i praktikken?","Min vejleder hjælper mig."],
+      ["Hvordan kommer du til praktikstedet?","Jeg <b>___</b>."]]},
+  { id:"sprogskole", em:"🗣️", title:"Min sprogskole", note:"dansk-klasse",
+    boxes:[
+      {h:"sprogskole / by",lines:["Jeg går på sprogskole i <b>___</b>.","Min sprogskole hedder <b>___</b>."]},
+      {h:"dage / tid",lines:["Jeg har undervisning <b>___</b>."]},
+      {h:"kursister / lærer",lines:["Mine klassekammerater kommer fra mange lande.","Min lærer hedder <b>___</b>."]},
+      {h:"aktiviteter",lines:["I timerne <b>___</b> vi (taler / læser / skriver)."]},
+      {h:"pauser",lines:["Vi holder pause klokken <b>___</b>."]},
+      {h:"transport til sprogskolen",lines:["Jeg <b>___</b> til sprogskolen."]}],
+    q:[["Hvor går du på sprogskole?","Jeg går på sprogskole i <b>___</b>."],["Hvilke dage har du undervisning?","Jeg har undervisning <b>___</b>."],
+      ["Hvem er din lærer?","Min lærer hedder <b>___</b>."],["Hvad laver I i timerne?","Vi <b>___</b>."],
+      ["Hvordan kommer du til sprogskolen?","Jeg <b>___</b>."],["Hvorfor lærer du dansk?","Jeg lærer dansk, fordi <b>___</b>."]]}
+];
+const CASE = [
+  {cat:"sted / by",sp:"Hvor",qs:["Hvor bor du?","Hvor arbejder Maja?","I hvilken by ligger caféen?"]},
+  {cat:"aktivitet",sp:"Hvad / Hvilke",qs:["Hvad laver Maja i sin fritid?","Hvilken aktivitet dyrker hun?"]},
+  {cat:"arbejdsopgaver",sp:"Hvad / Hvilke",qs:["Hvad laver Maja på arbejdet?","Hvilke arbejdsopgaver har hun?"]},
+  {cat:"tid (klokken)",sp:"Hvornår / Hvad tid",qs:["Hvornår arbejder Maja?","Hvad tid møder hun?","Hvor mange timer arbejder hun?"]},
+  {cat:"transport til arbejde",sp:"Hvordan",qs:["Hvordan kommer Maja på arbejde?","Tager hun bussen eller cyklen?"]},
+  {cat:"alene / sammen med",sp:"Hvem / (er du…)",qs:["Er Maja alene eller sammen med nogen?","Hvem løber hun sammen med?"]},
+  {cat:"dage / tid",sp:"Hvilke / Hvornår",qs:["Hvilke dage arbejder du?","Hvornår har du fri?"]},
+  {cat:"pris / gratis",sp:"Hvad koster / Hvor meget",qs:["Hvad koster det?","Er det gratis eller koster det penge?"]},
+  {cat:"transport til studie",sp:"Hvordan",qs:["Hvordan kommer du til studiet?","Cykler du eller går du?"]}
+];
+const SPORG = [
+  ["Du vil vide, hvor en person bor.","Hvor",["Hvor","Hvornår","Hvem"]],
+  ["Du vil vide, på hvilket tidspunkt noget sker.","Hvornår",["Hvordan","Hvornår","Hvad"]],
+  ["Du vil vide, med hvilken transport nogen kommer.","Hvordan",["Hvordan","Hvor","Hvilke"]],
+  ["Du vil vide, hvor mange timer nogen arbejder.","Hvor mange",["Hvor længe","Hvor mange","Hvornår"]],
+  ["Du vil vide, hvem en person er sammen med.","Hvem",["Hvem","Hvad","Hvor"]],
+  ["Du vil vide grunden til noget.","Hvorfor",["Hvorfor","Hvordan","Hvornår"]],
+  ["Du vil vide prisen på noget.","Hvad koster",["Hvad koster","Hvor mange","Hvem"]],
+  ["Du vil vide, hvilke arbejdsopgaver nogen har.","Hvilke",["Hvilke","Hvornår","Hvor"]],
+  ["Du vil vide, hvor længe en praktik varer.","Hvor længe",["Hvor længe","Hvor mange","Hvad"]],
+  ["Du vil vide, hvad en person laver.","Hvad",["Hvad","Hvem","Hvor"]]
+];
+
+/* ==================== SHARED ==================== */
+const main=document.getElementById('main'), hT=document.getElementById('hTitle'), hS=document.getElementById('hSub'), foot=document.getElementById('foot');
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+function pick(a){return a[Math.floor(Math.random()*a.length)]}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function norm(s){return s.trim().toLowerCase().replace(/\s+/g,' ')}
+function head(t,s){hT.textContent=t;hS.textContent=s}
+function bar(label,fn,right){return `<div class="bar"><button class="back" id="back">‹ ${esc(label)}</button>${right||''}</div>`}
+function wireBack(fn){document.getElementById('back').onclick=fn}
+function pickNew(a,key,ref){let x,g=0;do{x=pick(a);g++}while(a.length>1&&key(x)===ref.v&&g<30);ref.v=key(x);return x}
+
+/* ==================== HOME ==================== */
+function home(){
+  head("Dansk","øvelser til Modul 2");
+  foot.innerHTML="Dine egne danskøvelser";
+  main.innerHTML=`
+    <p class="lead">Hej Tania! Vælg, hvad du vil øve i dag.</p>
+    <div class="modes">
+      ${card('verb','⏱️','Verber','27 udsagnsord · nutid, datid, førnutid','hero')}
+      ${card('lesson','📚','Gloser &amp; grammatik','Lektion 1–3 · 5 øvelser','hero')}
+      ${card('oral','🎤','Modultest · mundtlig','Prøveøvelse · opgave 1 &amp; 2','hero')}
+    </div>`;
+  main.querySelectorAll('.mode').forEach(b=>b.onclick=()=>({verb:verbQuiz,lesson:lessonMenu,oral:oralMenu}[b.dataset.m])());
+}
+function card(m,ic,t,s,cls){return `<button class="mode ${cls||''}" data-m="${m}"><div class="ic">${ic}</div>
+  <div class="t"><b>${t}</b><span>${s}</span></div><div class="arw">›</div></button>`}
+
+/* ==================== 1) VERBER ==================== */
+let vTense="alle", vGrp="alle", vRef={v:null}, vR=0, vT=0, vStreak=0;
+const SUBJ=["jeg","du","han","hun","vi","de"];
+function verbQuiz(){
+  head("Verber","udsagnsord · Modul 2");
+  const tenses=[["alle","Alle tider"],["nutid","Nutid"],["datid","Datid"],["foernutid","Førnutid"]];
+  const grps=[["alle","Alle"],["ureg","Uregelmæssige"],["modal","Modalverber"],["reg","Regelmæssige"]];
+  main.innerHTML=bar("Forside",0,`<div class="count">Rigtige <b>${vR}</b>/${vT} · stime ${vStreak}</div>`)+`
+    <div class="filters">${tenses.map(t=>`<button class="chip ${t[0]===vTense?'on':''}" data-tn="${t[0]}">${t[1]}</button>`).join('')}</div>
+    <div class="filters">${grps.map(g=>`<button class="chip ${g[0]===vGrp?'on':''}" data-gp="${g[0]}">${g[1]}</button>`).join('')}</div>
+    <div id="q"></div>`;
+  wireBack(home);
+  main.querySelectorAll('.chip[data-tn]').forEach(c=>c.onclick=()=>{vTense=c.dataset.tn;verbQuiz()});
+  main.querySelectorAll('.chip[data-gp]').forEach(c=>c.onclick=()=>{vGrp=c.dataset.gp;verbQuiz()});
+  verbCard();
+}
+function verbPool(){return vGrp==="alle"?VERBS:VERBS.filter(v=>v[5]===vGrp)}
+function verbCard(){
+  const v=pickNew(verbPool(),x=>x[0],vRef);
+  const [inf,pres,past,perf,en]=v;
+  const tense=vTense==="alle"?pick(["nutid","datid","foernutid"]):vTense;
+  const subj=pick(SUBJ);
+  const label={nutid:"Nutid",datid:"Datid",foernutid:"Førnutid"}[tense];
+  const cue={nutid:"I dag "+subj+" ___.",datid:"I går "+subj+" ___.",foernutid:subj+" ___ (før nu)."}[tense];
+  const target={nutid:pres,datid:past,foernutid:perf}[tense];
+  document.getElementById('q').innerHTML=`
+    <div class="card">
+      <div class="tag">${label} · skriv formen</div>
+      <div class="prompt">${cue.replace('___','<span class="blank">___</span>')}</div>
+      <div class="hint">at ${esc(inf)} — <em>${esc(en)}</em>${tense==='foernutid'?' · brug <em>har</em> eller <em>er</em>':''}</div>
+      <input type="text" id="inp" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="${label.toLowerCase()}…">
+      <div class="aeoa"><button data-c="æ">æ</button><button data-c="ø">ø</button><button data-c="å">å</button></div>
+      <button class="action" id="go">Tjek</button>
+      <div class="fb" id="fb"></div>
+    </div>`;
+  const inp=document.getElementById('inp'), go=document.getElementById('go');
+  aeoa(inp);
+  const check=()=>{
+    const val=norm(inp.value); let ok=false, hint="";
+    if(val===norm(target))ok=true;
+    else if(tense==='foernutid'){
+      const [aux,part]=target.split(' ');
+      if(val===norm(part))hint=`Husk hjælpeverbet: <b>${esc(target)}</b> — ikke bare "${esc(part)}".`;
+      else{const other=aux==='har'?'er':'har'; if(val===norm(other+' '+part))hint=`Denne bruger <b>${esc(aux)}</b>, ikke "${esc(other)}": <b>${esc(target)}</b>.`;}
+    }
+    vT++; if(ok){vR++;vStreak++}else{vStreak=0}
+    inp.setAttribute('readonly','');
+    const fb=document.getElementById('fb');
+    fb.className='fb show '+(ok?'ok':'no');
+    fb.innerHTML=(ok?`Rigtigt — <b>${esc(target)}</b>`:(hint||`Nej — det er <b>${esc(target)}</b>`))
+      +`<span class="full">at ${esc(inf)} · ${esc(pres)} · ${esc(past)} · ${esc(perf)}</span>`;
+    updateVerbCount();
+    go.textContent='Næste ›';go.classList.add('ghost');go.dataset.next='1';
+  };
+  go.onclick=()=>go.dataset.next?verbCard():check();
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();go.dataset.next?verbCard():check()}});
+  inp.focus();
+}
+function updateVerbCount(){const c=main.querySelector('.count');if(c)c.innerHTML=`Rigtige <b>${vR}</b>/${vT} · stime ${vStreak}`}
+function aeoa(inp){main.querySelectorAll('.aeoa button').forEach(b=>b.onclick=()=>{
+  const s=inp.selectionStart??inp.value.length;
+  inp.value=inp.value.slice(0,s)+b.dataset.c+inp.value.slice(inp.selectionEnd??s);
+  inp.focus();inp.selectionStart=inp.selectionEnd=s+1;})}
+
+/* ==================== 2) GLOSER & GRAMMATIK ==================== */
+function lessonMenu(){
+  head("Gloser & grammatik","lektion 1–3");
+  main.innerHTML=bar("Forside",0)+`
+    <p class="lead">Vælg en øvelse.</p>
+    <div class="modes">
+      ${card('vocab','🗂️','Gloser','dansk ⇄ engelsk, efter tema')}
+      ${card('past','⏱️','Datid','skriv verbets datidsform')}
+      ${card('prep','📍','Præpositioner','i · på · til')}
+      ${card('adj','🎨','Tillægsord','bøjning: grundform · +t · +e')}
+      ${card('kort','💬','Kortsvar','Ja, det gør jeg …')}
+    </div>`;
+  wireBack(home);
+  main.querySelectorAll('.mode').forEach(b=>b.onclick=()=>({vocab:vocabMode,past:pastMode,prep:prepMode,adj:adjMode,kort:kortMode}[b.dataset.m])());
+}
+let lR=0,lT=0,lRef={v:null};
+function lHead(right){return `<div class="count">Rigtige <b>${lR}</b>/${lT}</div>`}
+function lScore(ok){lT++;if(ok)lR++}
+function mcCard(tag,promptHTML,hintHTML,answer,options,ruleHTML,next){
+  const opts=shuffle(options);
+  return `<div class="card">
+    <div class="tag">${tag}</div>
+    <div class="prompt">${promptHTML}</div>
+    ${hintHTML?`<div class="hint">${hintHTML}</div>`:''}
+    <div class="opts" id="opts">${opts.map(o=>`<button class="opt" data-o="${esc(o)}">${esc(o)}</button>`).join('')}</div>
+    <div class="fb" id="fb"></div></div>`;
+}
+function wireMC(answer,ruleHTML,next,fmtRight){
+  const wrap=document.getElementById('opts');
+  wrap.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    const ok=b.dataset.o===answer; lScore(ok);
+    wrap.querySelectorAll('.opt').forEach(x=>{x.disabled=true;
+      if(x.dataset.o===answer)x.classList.add('correct');else if(x===b)x.classList.add('wrong');});
+    const fb=document.getElementById('fb');
+    fb.className='fb show '+(ok?'ok':'no');
+    fb.innerHTML=(ok?'Rigtigt!':`Nej — det er <b>${esc(answer)}</b>`)+(ruleHTML?`<span class="full">${ruleHTML}</span>`:'')
+      +`<div style="margin-top:10px"><button class="action ghost" id="nx">Næste ›</button></div>`;
+    const c=main.querySelector('.count');if(c)c.innerHTML=`Rigtige <b>${lR}</b>/${lT}`;
+    document.getElementById('nx').onclick=next;
+  });
+}
+// vocab
+let vTheme="alle",vDir="da2en";
+function vocabMode(){
+  head("Gloser","dansk ⇄ engelsk");
+  const themes=["alle",...Object.keys(VOCAB)];
+  main.innerHTML=bar("Tilbage",0,lHead())+`
+    <div class="filters">${themes.map(t=>`<button class="chip ${t===vTheme?'on':''}" data-t="${t}">${t==='alle'?'Alle':t}</button>`).join('')}
+    <button class="chip ${vDir==='en2da'?'on':''}" data-dir="1" style="margin-left:auto">${vDir==='da2en'?'DA→EN':'EN→DA'}</button></div>
+    <div id="q"></div>`;
+  wireBack(lessonMenu);
+  main.querySelectorAll('.chip[data-t]').forEach(c=>c.onclick=()=>{vTheme=c.dataset.t;vocabMode()});
+  main.querySelector('.chip[data-dir]').onclick=()=>{vDir=vDir==='da2en'?'en2da':'da2en';vocabMode()};
+  vocabQ();
+}
+function vocabQ(){
+  const pool=vTheme==="alle"?Object.values(VOCAB).flat():VOCAB[vTheme];
+  const pair=pickNew(pool,p=>p[0],lRef);
+  const da2en=vDir==='da2en', q=da2en?pair[0]:pair[1], a=da2en?pair[1]:pair[0];
+  const wrongs=shuffle(pool.filter(p=>p[0]!==pair[0])).slice(0,3).map(p=>da2en?p[1]:p[0]);
+  document.getElementById('q').innerHTML=mcCard(`${vTheme==='alle'?'Gloser':vTheme} · ${da2en?'dansk → engelsk':'engelsk → dansk'}`,esc(q),'Hvad betyder det?',a,[a,...wrongs],'',vocabQ);
+  wireMC(a,'',vocabQ);
+}
+// datid
+function pastMode(){head("Datid","skriv formen");main.innerHTML=bar("Tilbage",0,lHead())+`<div id="q"></div>`;wireBack(lessonMenu);pastQ()}
+function pastQ(){
+  const v=pickNew(VERBS,x=>x[0],lRef);
+  const [inf,pres,past,perf,en]=v;
+  document.getElementById('q').innerHTML=`
+    <div class="card">
+      <div class="tag">Datid · skriv formen</div>
+      <div class="prompt">I går <span class="blank">___</span> jeg.</div>
+      <div class="hint">at ${esc(inf)} — <em>${esc(en)}</em> · nutid: ${esc(pres)}</div>
+      <input type="text" id="inp" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="datid…">
+      <div class="aeoa"><button data-c="æ">æ</button><button data-c="ø">ø</button><button data-c="å">å</button></div>
+      <button class="action" id="go">Tjek</button><div class="fb" id="fb"></div></div>`;
+  const inp=document.getElementById('inp'),go=document.getElementById('go');aeoa(inp);
+  const check=()=>{const ok=norm(inp.value)===norm(past);lScore(ok);inp.setAttribute('readonly','');
+    const fb=document.getElementById('fb');fb.className='fb show '+(ok?'ok':'no');
+    fb.innerHTML=(ok?`Rigtigt — <b>${esc(past)}</b>`:`Næsten — det er <b>${esc(past)}</b>`)+`<span class="full">at ${esc(inf)} · ${esc(pres)} · ${esc(past)} · ${esc(perf)}</span>`;
+    const c=main.querySelector('.count');if(c)c.innerHTML=`Rigtige <b>${lR}</b>/${lT}`;
+    go.textContent='Næste ›';go.classList.add('ghost');go.dataset.next='1';};
+  go.onclick=()=>go.dataset.next?pastQ():check();
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();go.dataset.next?pastQ():check()}});inp.focus();
+}
+// prep
+function prepMode(){head("Præpositioner","i · på · til");main.innerHTML=bar("Tilbage",0,lHead())+`<div id="q"></div>`;wireBack(lessonMenu);prepQ()}
+function prepQ(){
+  const p=pickNew(PREP,x=>x[0],lRef);const [sent,ans,eng,rule]=p;
+  document.getElementById('q').innerHTML=mcCard("Præpositioner · i · på · til",
+    esc(sent).replace('___','<span class="blank">___</span>'),`<em>${esc(eng)}</em>`,ans,["i","på","til"],esc(rule),prepQ);
+  wireMC(ans,esc(rule),prepQ);
+}
+// adj
+function adjMode(){head("Tillægsord","bøjning");main.innerHTML=bar("Tilbage",0,lHead())+`<div id="q"></div>`;wireBack(lessonMenu);adjQ()}
+function adjQ(){
+  const a=pickNew(ADJ,x=>x[0],lRef);const [phrase,ans,options,rule,eng]=a;
+  document.getElementById('q').innerHTML=mcCard("Tillægsord · bøjning",
+    esc(phrase).replace('___','<span class="blank">___</span>'),`<em>${esc(eng)}</em>`,ans,options,esc(rule),adjQ);
+  wireMC(ans,esc(rule),adjQ);
+}
+// kort
+function kortMode(){head("Kortsvar","Ja, det …");main.innerHTML=bar("Tilbage",0,lHead())+`<div id="q"></div>`;wireBack(lessonMenu);kortQ()}
+function kortQ(){
+  const k=pickNew(KORT,x=>x[0],lRef);const [q,ans,options,note]=k;
+  const opts=shuffle(options);
+  document.getElementById('q').innerHTML=`<div class="card">
+    <div class="tag">Kortsvar · svar med Ja, det …</div>
+    <div class="prompt">${esc(q)}</div>
+    <div class="hint">Ja, det <span style="color:var(--red);font-weight:700">___</span> jeg.</div>
+    <div class="opts" id="opts">${opts.map(o=>`<button class="opt" data-o="${esc(o)}">Ja, det ${esc(o)} jeg</button>`).join('')}</div>
+    <div class="fb" id="fb"></div></div>`;
+  const wrap=document.getElementById('opts');
+  wrap.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    const ok=b.dataset.o===ans;lScore(ok);
+    wrap.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(x.dataset.o===ans)x.classList.add('correct');else if(x===b)x.classList.add('wrong');});
+    const fb=document.getElementById('fb');fb.className='fb show '+(ok?'ok':'no');
+    fb.innerHTML=`${ok?'Rigtigt':'Nej'} — <b>Ja, det ${esc(ans)} jeg</b><span class="full">${esc(note)}</span><div style="margin-top:10px"><button class="action ghost" id="nx">Næste ›</button></div>`;
+    const c=main.querySelector('.count');if(c)c.innerHTML=`Rigtige <b>${lR}</b>/${lT}`;
+    document.getElementById('nx').onclick=kortQ;
+  });
+}
+
+/* ==================== 3) MODULTEST (mundtlig) ==================== */
+function oralMenu(){
+  head("Modultest · mundtlig","DU3 · Modul 2");
+  main.innerHTML=bar("Forside",0)+`
+    <p class="lead">Øv til den mundtlige prøve. Sig svarene <b>højt</b>, ligesom til prøven.</p>
+    <div class="modes">
+      ${card('opg1','🗣️','Opgave 1 · Præsentation','vælg emne · fremlæggelse + spørgsmål')}
+      ${card('opg2','🖼️','Opgave 2 · Spørg om et foto','lav 6 spørgsmål ud fra billeder')}
+      ${card('sporg','❓','Spørgeord','Hvor · hvornår · hvordan · hvem …')}
+      ${card('skriv','✉️','Skriftlig prøve','email · 70 ord · huskeliste')}
+    </div>`;
+  wireBack(home);
+  main.querySelectorAll('.mode').forEach(b=>b.onclick=()=>({opg1:opg1Menu,opg2:opg2Start,sporg:sporgStart,skriv:skrivInfo}[b.dataset.m])());
+}
+// opgave 1
+function opg1Menu(){
+  head("Opgave 1 · Vælg emne","til prøven vælger du 2 af 6");
+  main.innerHTML=bar("Tilbage",0)+`
+    <p class="lead">Vælg et emne. Du ser <b>stilladser</b> (sætninger med huller) og kan derefter øve <b>eksaminators spørgsmål</b>.</p>
+    <div class="topics">${TOPICS.map(t=>`<button class="topic" data-id="${t.id}"><span class="em">${t.em}</span><b>${t.title}</b><span>${t.note}</span></button>`).join('')}</div>`;
+  wireBack(oralMenu);
+  main.querySelectorAll('.topic').forEach(b=>b.onclick=()=>opg1Topic(b.dataset.id));
+}
+function opg1Topic(id){
+  const t=TOPICS.find(x=>x.id===id);
+  head(t.title,"Opgave 1 · fremlæggelse");
+  main.innerHTML=bar("Emner",0)+`
+    <h2 class="sec">${t.em} ${t.title}</h2>
+    <div class="say">🎤 <span>Sig 1–2 minutter om emnet. Kom omkring alle 6 felter. Brug sætningerne som stillads.</span></div>
+    <div class="card"><div class="tag">Stilladser · fyld hullerne med dit eget</div>
+      ${t.boxes.map(b=>`<div class="box"><h4><span class="d"></span>${esc(b.h)}</h4>${b.lines.map(l=>`<div class="frame">${l}</div>`).join('')}</div>`).join('')}</div>
+    <button class="action ghost" id="startQ">Øv eksaminators spørgsmål ›</button>`;
+  wireBack(opg1Menu);
+  document.getElementById('startQ').onclick=()=>opg1Q(t,0,shuffle(t.q));
+}
+function opg1Q(t,i,deck){
+  if(i>=deck.length){
+    head(t.title,"Opgave 1 · færdig");
+    main.innerHTML=bar("Emner",0)+`<div class="card" style="text-align:center">
+      <div style="font-size:40px;margin-bottom:8px">✅</div><h2 class="sec" style="margin-bottom:6px">Godt klaret!</h2>
+      <p class="lead" style="margin-bottom:18px">Du har øvet alle ${deck.length} spørgsmål til <b>${esc(t.title)}</b>.</p>
+      <div class="btnrow"><button class="pill red" id="again">Øv igen</button><button class="pill" id="other">Andet emne</button></div></div>`;
+    wireBack(opg1Menu);
+    document.getElementById('again').onclick=()=>opg1Q(t,0,shuffle(t.q));
+    document.getElementById('other').onclick=opg1Menu;return;
+  }
+  const [ques,frame]=deck[i];
+  head(t.title,`Opgave 1 · spørgsmål ${i+1}/${deck.length}`);
+  main.innerHTML=bar("Emner",0,`<div class="count">Spørgsmål <b>${i+1}</b>/${deck.length}</div>`)+`
+    <div class="card"><div class="tag">Eksaminator spørger</div>
+      <div class="prompt">${esc(ques)}</div>
+      <div class="say">🎤 <span>Svar højt med en hel sætning. Tjek så et forslag.</span></div>
+      <div class="reveal" id="rev"><div class="rt">Svarforslag</div><div class="ln">${frame}</div></div>
+      <button class="action" id="show">Vis svarforslag</button></div>`;
+  wireBack(opg1Menu);
+  const rev=document.getElementById('rev'),show=document.getElementById('show');
+  show.onclick=()=>{if(!rev.classList.contains('show')){rev.classList.add('show');show.textContent='Næste spørgsmål ›';show.classList.add('ghost')}else opg1Q(t,i+1,deck)};
+}
+// opgave 2
+let c2i=0,c2deck=[],c2done=0;
+function opg2Start(){c2deck=shuffle(CASE);c2i=0;c2done=0;opg2Q()}
+function opg2Q(){
+  const item=c2deck[c2i%c2deck.length];
+  head("Opgave 2 · Spørg om et foto","lav et spørgsmål til kategorien");
+  main.innerHTML=bar("Tilbage",0,`<div class="count">Øvet: <b>${c2done}</b></div>`)+`
+    <div class="say" style="margin-bottom:14px">🖼️ <span>Du ser et billede med dette nøgleord. Stil et <b>spørgsmål</b> til din makker — sig det højt.</span></div>
+    <div class="card"><div class="tag">Nøgleord / kategori</div>
+      <div class="prompt" style="text-align:center;padding:6px 0 2px">${esc(item.cat)}</div>
+      <div class="reveal" id="rev"><div class="rt">Gode spørgsmål</div>${item.qs.map(q=>`<div class="ln">• ${esc(q)}</div>`).join('')}
+        <div class="sp">Spørgeord: ${esc(item.sp)}</div></div>
+      <button class="action" id="show">Vis gode spørgsmål</button>
+      <div class="rate" id="rate" style="display:none"><button class="yes" id="y">Jeg kunne det ✓</button><button class="no" id="n">Øv igen</button></div></div>`;
+  wireBack(oralMenu);
+  const rev=document.getElementById('rev'),show=document.getElementById('show'),rate=document.getElementById('rate');
+  show.onclick=()=>{rev.classList.add('show');show.style.display='none';rate.style.display='flex'};
+  document.getElementById('y').onclick=()=>{c2done++;c2i++;opg2Q()};
+  document.getElementById('n').onclick=()=>{c2i++;opg2Q()};
+}
+// spørgeord
+let spR=0,spT=0,spRef={v:null};
+function sporgStart(){spR=0;spT=0;spRef.v=null;sporgQ()}
+function sporgQ(){
+  const item=pickNew(SPORG,x=>x[0],spRef);const [sit,ans,opts]=item;
+  head("Spørgeord","vælg det rigtige");
+  main.innerHTML=bar("Tilbage",0,`<div class="count">Rigtige <b>${spR}</b>/${spT}</div>`)+`
+    <div class="card"><div class="tag">Hvilket spørgeord?</div><div class="prompt">${esc(sit)}</div>
+      <div class="opts" id="opts">${shuffle(opts).map(o=>`<button class="opt" data-o="${esc(o)}">${esc(o)} …?</button>`).join('')}</div>
+      <div class="fb" id="fb"></div></div>`;
+  wireBack(oralMenu);
+  const wrap=document.getElementById('opts');
+  wrap.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    const ok=b.dataset.o===ans;spT++;if(ok)spR++;
+    wrap.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(x.dataset.o===ans)x.classList.add('correct');else if(x===b)x.classList.add('wrong')});
+    const fb=document.getElementById('fb');fb.className='fb show '+(ok?'ok':'no');
+    fb.innerHTML=(ok?'Rigtigt! ':`Nej — det er <b>${esc(ans)}</b>. `)+`<div style="margin-top:8px"><button class="action ghost" id="nx">Næste ›</button></div>`;
+    const c=main.querySelector('.count');if(c)c.innerHTML=`Rigtige <b>${spR}</b>/${spT}`;
+    document.getElementById('nx').onclick=sporgQ;
+  });
+}
+// skriftlig
+function skrivInfo(){
+  head("Skriftlig prøve","email · min. 70 ord · 30 min");
+  main.innerHTML=bar("Tilbage",0)+`
+    <div class="card"><div class="tag">Sådan er den skriftlige prøve</div><ul class="tips">
+      <li>Du skriver en <b>email</b> om et emne — mindst <span class="kw">70 ord</span>.</li>
+      <li>Du <b>skal svare på alle spørgsmål</b> i opgaven.</li>
+      <li>Du har <span class="kw">30 minutter</span>.</li></ul></div>
+    <div class="card"><div class="tag">Opbygning</div><ul class="tips">
+      <li><b>Start:</b> <span class="kw">Kære …</span> / <span class="kw">Hej …</span></li>
+      <li><b>Indledning:</b> Tak for din mail.</li>
+      <li><b>Midte:</b> Svar på <u>hvert</u> spørgsmål — ét ad gangen.</li>
+      <li><b>Slut:</b> Jeg håber, vi ses snart. / Skriv gerne tilbage.</li>
+      <li><b>Hilsen:</b> <span class="kw">Mange hilsner …</span> / <span class="kw">Venlig hilsen …</span></li></ul></div>
+    <div class="card"><div class="tag">Nyttige sætninger</div><ul class="tips">
+      <li>Du spørger, om <b>___</b>. — Ja, det …</li>
+      <li>Jeg vil gerne fortælle dig om <b>___</b>.</li>
+      <li>Du spørger, hvornår <b>___</b>. Det er <b>___</b>.</li>
+      <li>Bind sammen: <span class="kw">og · men · fordi · så · derfor · også</span></li></ul></div>
+    <div class="card"><div class="tag">Tjek før du afleverer</div><ul class="tips">
+      <li>Har jeg svaret på <b>alle</b> spørgsmål?</li>
+      <li>Mindst <b>70 ord</b>?</li>
+      <li>Rigtig <b>datid/nutid</b>? (arbejdede / arbejder)</li>
+      <li>Er der en <b>start</b> og en <b>hilsen</b>?</li></ul></div>`;
+  wireBack(oralMenu);
+}
+
+home();
+</script>
+</body>
+</html>
